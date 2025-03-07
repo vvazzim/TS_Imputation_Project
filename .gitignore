@@ -1,0 +1,15 @@
+# Ignorer les fichiers générés par Python
+*.pyc
+__pycache__/
+
+# Ignorer les environnements virtuels
+.venv/
+env/
+
+# Ignorer les fichiers de notebooks sauvegardés
+.ipynb_checkpoints/
+
+# Ignorer les fichiers temporaires
+*.log
+# Ignorer les fichiers CSV volumineux
+data/*.csv

@@ -15,15 +15,19 @@ else:
     print("No GPU found, using CPU")
 
 # Google colab
-# DEFAULT_PATH = "/content"
+# DEFAULT_PATH = "/content/data/"
+# DEFAULT_OUTPUT_PATH = "/content/"
+# Kaggle notebook
+# DEFAULT_PATH = "/kaggle/input/master-1-data-challenge-ts-imputation-step-1/"
+# DEFAULT_OUTPUT_PATH = "/kaggle/working/"
 # Local
-DEFAULT_PATH = "."
+DEFAULT_OUTPUT_PATH = "./"
+DEFAULT_PATH = "./data"
 
-INPUT_TRAIN = DEFAULT_PATH + "/data/train.csv"
-INPUT_TEST = DEFAULT_PATH + "/data/test.csv"
+INPUT_TRAIN = DEFAULT_PATH + "train.csv"
+INPUT_TEST = DEFAULT_PATH + "test.csv"
 
-TEMPLATE_SUBMISSION = DEFAULT_PATH + "/data/step1_submission_example.csv"
-OUTPUT_SUBMISSION = "submission.csv"
+OUTPUT_SUBMISSION = DEFAULT_OUTPUT_PATH + "submission.csv"
 
 
 df_train = pd.read_csv(INPUT_TRAIN,index_col=0)
@@ -48,13 +52,12 @@ imputer = KNNImputer(n_neighbors=5)
 data_test_imputed = imputer.fit_transform(data_test_np)
 
 
-# Export the submission
-submission_example = pd.read_csv(TEMPLATE_SUBMISSION)
 
-# Index with NaN values (flattened)
-idx_with_nan = df_test.isna().values.flatten()
+# Export the submission
 
 flattened_test_imputed = data_test_imputed.flatten()
+# Index with NaN values (flattened)
+idx_with_nan = df_test.isna().values.flatten()
 predicted_values = flattened_test_imputed[idx_with_nan]
 
 submission = pd.DataFrame({"ID": [i for i in range(len(idx_with_nan))], "TARGET": predicted_values})

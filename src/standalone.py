@@ -50,11 +50,13 @@ data_test_imputed = imputer.fit_transform(data_test_np)
 
 # Export the submission
 submission_example = pd.read_csv(TEMPLATE_SUBMISSION)
-missing_positions = submission_example["ID"].values
+
+# Index with NaN values (flattened)
+idx_with_nan = df_test.isna().values.flatten()
 
 flattened_test_imputed = data_test_imputed.flatten()
-predicted_values = flattened_test_imputed[missing_positions]
+predicted_values = flattened_test_imputed[idx_with_nan]
 
-submission = pd.DataFrame({"ID": missing_positions, "TARGET": predicted_values})
+submission = pd.DataFrame({"ID": [i for i in range(len(idx_with_nan))], "TARGET": predicted_values})
 submission.to_csv(OUTPUT_SUBMISSION, index=False)
 print("Successfully exported to", OUTPUT_SUBMISSION)
